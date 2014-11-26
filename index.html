@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width" />
+  <title>Trace colors into svg from image</title>
+  <link rel="stylesheet" href="http://www.terrain.io/css/docs.css" />
+  <style>
+    body { margin: 0; }
+    #hero {
+      position: relative;
+      overflow: hidden;
+    }
+    #hero img {
+      width: 100%;
+      height: auto;
+    }
+
+    #hero svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.5;
+    }
+  </style>
+</head>
+<body>
+<section id="controls">
+  <div class="container">
+    <label>File to be polygoned</label>
+    <input type="file" id="photo-input" />
+  </div>
+</section>
+<section id="hero">
+  <img id="photo" src="" alt="Getting there" />
+</section>
+
+<script type="text/javascript" src="grider.js"></script>
+<script type="text/javascript" src="color-sampler.js"></script>
+<script type="text/javascript">
+  var image     = document.getElementById('photo');
+  var fileInput = document.getElementById('photo-input');
+  var hero      = document.getElementById('hero');
+  var triangleGrid;
+
+  image.onload = function () {
+    triangleGrid && hero.removeChild(triangleGrid);
+    triangleGrid = Grider.drawGrid(image.width, image.height, 35);
+    hero.appendChild(triangleGrid);
+    
+    ColorSampler.trace(image, triangleGrid);
+  };
+
+  image.src = 'images/q.jpg';
+
+  fileInput.onchange = function () {
+    var input = this;
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      console.log(e);
+      image.src = e.target.result;
+    };
+    reader.readAsDataURL(input.files[0]);
+  };
+</script>
+</body>
+</html>
