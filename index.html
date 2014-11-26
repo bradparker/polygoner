@@ -48,7 +48,11 @@
 
   image.onload = function () {
     triangleGrid && hero.removeChild(triangleGrid);
-    triangleGrid = Grider.drawGrid(image.width, image.height, 35);
+    triangleGrid = Grider.drawGrid(
+      (image.naturalWidth || image.width), 
+      (image.naturalHeight || image.height), 
+      35
+    );
     hero.appendChild(triangleGrid);
     
     ColorSampler.trace(image, triangleGrid);
@@ -60,7 +64,6 @@
     var input = this;
     var reader = new FileReader();
     reader.onload = function (e) {
-      console.log(e);
       image.src = e.target.result;
     };
     reader.readAsDataURL(input.files[0]);

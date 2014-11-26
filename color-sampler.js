@@ -30,8 +30,8 @@
 
   function resizeSVG (svg, width, height) {
     var styles = {
-      width: width,
-      height: height
+      width: width + 'px',
+      height: height + 'px'
     };
     extend(svg.style, styles);
     return svg;
