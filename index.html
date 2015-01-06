@@ -30,8 +30,19 @@
 <body>
 <section id="controls">
   <div class="container">
-    <label>File to be polygoned</label>
-    <input type="file" id="photo-input" />
+    <fieldset>
+      <div class="grid-container">
+        <div class="one-half">
+          <label>File to be polygoned</label>
+          <input type="file" id="photo-input" />
+        </div>
+
+        <div class="one-half">
+          <label>Density of polygons</label>
+          <input type="number" id="density-input" value="35" step="1" min="2" max="75"/>
+        </div>
+      </div>
+    </fieldset>
   </div>
 </section>
 <section id="hero">
@@ -43,20 +54,24 @@
 <script type="text/javascript">
   var image     = document.getElementById('photo');
   var fileInput = document.getElementById('photo-input');
+  var densityIn = document.getElementById('density-input');
   var hero      = document.getElementById('hero');
   var triangleGrid;
 
-  image.onload = function () {
+  function draw () {
     triangleGrid && hero.removeChild(triangleGrid);
     triangleGrid = Grider.drawGrid(
-      (image.naturalWidth || image.width), 
-      (image.naturalHeight || image.height), 
-      35
+      (image.naturalWidth || image.width),
+      (image.naturalHeight || image.height),
+      densityIn.value
     );
     hero.appendChild(triangleGrid);
-    
+
     ColorSampler.trace(image, triangleGrid);
-  };
+  }
+
+  image.onload = draw;
+  densityIn.onblur = draw;
 
   image.src = 'images/q.jpg';
 
